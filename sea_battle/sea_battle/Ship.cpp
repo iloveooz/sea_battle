@@ -14,7 +14,7 @@ bool Cell::operator < (const Cell& c) const {
 }
 
 void Rect::FillCset() {
-	for (int i = lt.row; 1 <= rb.row; i++)
+	for (int i = lt.row; i <= rb.row; i++)
 		for (int j = lt.col; j <= rb.col; j++)
 			cset.insert(Cell(i, j));
 }
