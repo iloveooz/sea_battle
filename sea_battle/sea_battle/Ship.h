@@ -48,5 +48,4 @@ protected:
 	int nDeck; // количество палуб
 	int nLiveDeck; // количество неповрежденных палуб
 };
-
 #endif /* SHIP_H */
