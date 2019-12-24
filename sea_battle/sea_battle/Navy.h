@@ -1,64 +1,64 @@
 // Navy.h
 #include "Ship.h"
-#define DECK 176 // исправная клетка-палуба
-#define DAMAGE 'X' // разрушенная клетка-палуба
-#define MISS 'o' // пустая клетка, в которую упал снаряд
+#define DECK 176 // РёСЃРїСЂР°РІРЅР°СЏ РєР»РµС‚РєР°-РїР°Р»СѓР±Р°
+#define DAMAGE 'X' // СЂР°Р·СЂСѓС€РµРЅРЅР°СЏ РєР»РµС‚РєР°-РїР°Р»СѓР±Р°
+#define MISS 'o' // РїСѓСЃС‚Р°СЏ РєР»РµС‚РєР°, РІ РєРѕС‚РѕСЂСѓСЋ СѓРїР°Р» СЃРЅР°СЂСЏРґ
 
-typedef unsigned char Field[N][N]; // игровое поле
-typedef std::map<Cell, int> ShipMap; // словарь ассоциаций "клетка - индекс корабля"
+typedef unsigned char Field[N][N]; // РёРіСЂРѕРІРѕРµ РїРѕР»Рµ
+typedef std::map<Cell, int> ShipMap; // СЃР»РѕРІР°СЂСЊ Р°СЃСЃРѕС†РёР°С†РёР№ "РєР»РµС‚РєР° - РёРЅРґРµРєСЃ РєРѕСЂР°Р±Р»СЏ"
 
-enum CurrentState { Miss, Damage, Kill }; // результат попадания в цель
+enum CurrentState { Miss, Damage, Kill }; // СЂРµР·СѓР»СЊС‚Р°С‚ РїРѕРїР°РґР°РЅРёСЏ РІ С†РµР»СЊ
 
-// Класс Space - информационное пространство для обмена информацией между игроками
+// РљР»Р°СЃСЃ Space - РёРЅС„РѕСЂРјР°С†РёРѕРЅРЅРѕРµ РїСЂРѕСЃС‚СЂР°РЅСЃС‚РІРѕ РґР»СЏ РѕР±РјРµРЅР° РёРЅС„РѕСЂРјР°С†РёРµР№ РјРµР¶РґСѓ РёРіСЂРѕРєР°РјРё
 struct Space {
 public:
-	static Cell u_fire; // огонь от пользователя
-	static Cell r_fire; // огонь от робота (компьютера)
-	static CurrentState u_state; // состояние пользователя
-	static CurrentState r_state; // состояние робота
+	static Cell u_fire; // РѕРіРѕРЅСЊ РѕС‚ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+	static Cell r_fire; // РѕРіРѕРЅСЊ РѕС‚ СЂРѕР±РѕС‚Р° (РєРѕРјРїСЊСЋС‚РµСЂР°)
+	static CurrentState u_state; // СЃРѕСЃС‚РѕСЏРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+	static CurrentState r_state; // СЃРѕСЃС‚РѕСЏРЅРёРµ СЂРѕР±РѕС‚Р°
 	static int step;
 };
 
-// Базовый класс Navy
+// Р‘Р°Р·РѕРІС‹Р№ РєР»Р°СЃСЃ Navy
 class Navy : public Space {
 public:
 	Navy();
-	void AllocShip(int, int, std::string); // разместить корабль 
-	void Show() const; 	// показать поля ownField и enemyField
-	int GetInt(); // ввод целого числа
-	bool IsLive() { return (nLiveShip > 0); } // мы еще живы?
-	Rect Shell(Rect) const; // вернуть "оболочку для заданного прямоугольника cам прямоугольник плюс пограничные клетки)
-	void AddToVetoSet(Rect); // Добавить клетки прямоугольника в множество vetoSet.
+	void AllocShip(int, int, std::string); // СЂР°Р·РјРµСЃС‚РёС‚СЊ РєРѕСЂР°Р±Р»СЊ 
+	void Show() const; 	// РїРѕРєР°Р·Р°С‚СЊ РїРѕР»СЏ ownField Рё enemyField
+	int GetInt(); // РІРІРѕРґ С†РµР»РѕРіРѕ С‡РёСЃР»Р°
+	bool IsLive() { return (nLiveShip > 0); } // РјС‹ РµС‰Рµ Р¶РёРІС‹?
+	Rect Shell(Rect) const; // РІРµСЂРЅСѓС‚СЊ "РѕР±РѕР»РѕС‡РєСѓ РґР»СЏ Р·Р°РґР°РЅРЅРѕРіРѕ РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° cР°Рј РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРє РїР»СЋСЃ РїРѕРіСЂР°РЅРёС‡РЅС‹Рµ РєР»РµС‚РєРё)
+	void AddToVetoSet(Rect); // Р”РѕР±Р°РІРёС‚СЊ РєР»РµС‚РєРё РїСЂСЏРјРѕСѓРіРѕР»СЊРЅРёРєР° РІ РјРЅРѕР¶РµСЃС‚РІРѕ vetoSet.
 protected:
-	Ship ship[10]; // корабли флота
-	Field ownField; // мое игровое поле
-	Field enemyField; // игровое поле неприятеля
-	ShipMap shipMap; // словарь ассоциаций "клетка - индекс корабля"
-	CellSet vetoSet; // множество "запрещенных" клеток
-	CellSet crushSet; // множество "уничтоженных" клеток
-	int nLiveShip; // количество боеспособных кораблей
+	Ship ship[10]; // РєРѕСЂР°Р±Р»Рё С„Р»РѕС‚Р°
+	Field ownField; // РјРѕРµ РёРіСЂРѕРІРѕРµ РїРѕР»Рµ
+	Field enemyField; // РёРіСЂРѕРІРѕРµ РїРѕР»Рµ РЅРµРїСЂРёСЏС‚РµР»СЏ
+	ShipMap shipMap; // СЃР»РѕРІР°СЂСЊ Р°СЃСЃРѕС†РёР°С†РёР№ "РєР»РµС‚РєР° - РёРЅРґРµРєСЃ РєРѕСЂР°Р±Р»СЏ"
+	CellSet vetoSet; // РјРЅРѕР¶РµСЃС‚РІРѕ "Р·Р°РїСЂРµС‰РµРЅРЅС‹С…" РєР»РµС‚РѕРє
+	CellSet crushSet; // РјРЅРѕР¶РµСЃС‚РІРѕ "СѓРЅРёС‡С‚РѕР¶РµРЅРЅС‹С…" РєР»РµС‚РѕРє
+	int nLiveShip; // РєРѕР»РёС‡РµСЃС‚РІРѕ Р±РѕРµСЃРїРѕСЃРѕР±РЅС‹С… РєРѕСЂР°Р±Р»РµР№
 };
 
-// Класс UserNavy
+// РљР»Р°СЃСЃ UserNavy
 class UserNavy : public Navy {
 public:
 	UserNavy() { Allocation(); }
 	void Allocation(); 
-	void FireOff(); // выстрел no неприятелю
-	void ResultAnalyse(); // анализ результатов выстрела
-	void GetFire(); // "прием" огня противника
-	void FillDeadZone(Rect r, Field &); // заполнить пробелами пограничные клетки для r
+	void FireOff(); // РІС‹СЃС‚СЂРµР» no РЅРµРїСЂРёСЏС‚РµР»СЋ
+	void ResultAnalyse(); // Р°РЅР°Р»РёР· СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РІС‹СЃС‚СЂРµР»Р°
+	void GetFire(); // "РїСЂРёРµРј" РѕРіРЅСЏ РїСЂРѕС‚РёРІРЅРёРєР°
+	void FillDeadZone(Rect r, Field &); // Р·Р°РїРѕР»РЅРёС‚СЊ РїСЂРѕР±РµР»Р°РјРё РїРѕРіСЂР°РЅРёС‡РЅС‹Рµ РєР»РµС‚РєРё РґР»СЏ r
 };
 
-// Класс RobotNavy
+// РљР»Р°СЃСЃ RobotNavy
 class RobotNavy : public Navy {
 public:
 	RobotNavy();
-	void Allocatlon(); 
-	void FireOff(); // выстрел no неприятелю
-	void ResultAnalyse(); // анализ результатов выстрела
-	void GetFire(); // "прием" огня противника
-	private:
-	bool IsCrushContinue; // предыдущий выстрел был успешным
-	bool upEmpty; // у поврежденного корабля противника нет "живых" клеток в верхнем направлении
+	void Allocation(); 
+	void FireOff(); // РІС‹СЃС‚СЂРµР» no РЅРµРїСЂРёСЏС‚РµР»СЋ
+	void ResultAnalyse(); // Р°РЅР°Р»РёР· СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РІС‹СЃС‚СЂРµР»Р°
+	void GetFire(); // "РїСЂРёРµРј" РѕРіРЅСЏ РїСЂРѕС‚РёРІРЅРёРєР°
+private:
+	bool isCrushContinue; // РїСЂРµРґС‹РґСѓС‰РёР№ РІС‹СЃС‚СЂРµР» Р±С‹Р» СѓСЃРїРµС€РЅС‹Рј
+	bool upEmpty; // Сѓ РїРѕРІСЂРµР¶РґРµРЅРЅРѕРіРѕ РєРѕСЂР°Р±Р»СЏ РїСЂРѕС‚РёРІРЅРёРєР° РЅРµС‚ "Р¶РёРІС‹С…" РєР»РµС‚РѕРє РІ РІРµСЂС…РЅРµРј РЅР°РїСЂР°РІР»РµРЅРёРё
 };
