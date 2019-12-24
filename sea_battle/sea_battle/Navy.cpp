@@ -29,10 +29,10 @@ for (int i = 0; i < N; i++)
 
 Rect Navy::Shell(Rect r) const {
 	Rect sh(r);
-	sh.lt.row = (--sh.lt.row < 0) ? 0 : sh.rb.row;
-	sh.lt.col = (--sh.lt.col < 0) ? 0 : sh.rb.col;
-	sh.rb.row = (++sh.rb.row > (N -	1)) ? (N - 1) : sh.lt.row;
-	sh.rb.col = (++sh.rb.col > (N -	1)) ? (N - 1) : sh.lt.col;
+	sh.lt.row = (--sh.lt.row < 0) ? 0 : sh.lt.row;
+	sh.lt.col = (--sh.lt.col < 0) ? 0 : sh.lt.col;
+	sh.rb.row = (++sh.rb.row > (N -	1)) ? (N - 1) : sh.rb.row;
+	sh.rb.col = (++sh.rb.col > (N -	1)) ? (N - 1) : sh.rb.col;
 	return sh;
 }
 
@@ -69,7 +69,7 @@ void Navy::AllocShip(int indShip, int nDeck, std::string name) {
 }
 
 void Navy::Show() const {
-	char rowName[10] = { 'A', 'B', 'C', 'D', 'E', 'F', '6', 'H', 'I', 'J' };
+	char rowName[10] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J' };
 	std::string colName("l 2 3 4 5 6 7 8 9 10");
 	int i, j;
 	std::cout << "---------------------\n";
@@ -80,17 +80,19 @@ void Navy::Show() const {
 	for (i = 0; i < N; i++) {
 		// Own
 		std::string line = gap(1) + rowName[i];
+
 		for (j = 0; j < N; j++)
 			line += gap(1) + (char)ownField[i][j];
+		
 		// Enemy
 		line += gap(5) + rowName[i];
+
 		for (j = 0; j < N; j++)
 			line += gap(1) + (char)enemyField[i][j];
 		std::cout << line << std::endl;
-		std::cout << std::endl;
 	}
 	std::cout << "=====================\n";
-	std::cout << step << ". " << "Мой выстрел:  ";
+	std::cout << step << ". " << "Мой выстрел: ";
 	step++;
 }
 
