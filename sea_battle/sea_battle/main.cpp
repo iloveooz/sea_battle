@@ -3,16 +3,17 @@
 #include "Navy.h"
 
 int main() {
-	// Начальная позиция
+	setlocale(LC_ALL, "Russian");
+	// РќР°С‡Р°Р»СЊРЅР°СЏ РїРѕР·РёС†РёСЏ
 	UserNavy userNavy;
 	RobotNavy robotNavy;
 
 	userNavy.Show();
 
 	while (userNavy.IsLive() && robotNavy.IsLive()) {
-		// Выстрел пользователя
+		// Р’С‹СЃС‚СЂРµР» РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
 		if (Space::u_state != Miss) {
-			std::cout << "пропускается...: <Enter>" << std::endl;
+			std::cout << "РїСЂРѕРїСѓСЃРєР°РµС‚СЃСЏ...: <Enter>" << std::endl;
 			std::cin.get();
 		}
 		else {
@@ -25,9 +26,9 @@ int main() {
 				break;
 			}
 		}
-		// Выстрел робота
+		// Р’С‹СЃС‚СЂРµР» СЂРѕР±РѕС‚Р°
 		if (Space::r_state != Miss)
-			std::cout << "\nВыстрел неприятеля: пропускается..." << std::endl;
+			std::cout << "\nР’С‹СЃС‚СЂРµР» РЅРµРїСЂРёСЏС‚РµР»СЏ: РїСЂРѕРїСѓСЃРєР°РµС‚СЃСЏ..." << std::endl;
 		else {
 			robotNavy.FireOff();
 			userNavy.GetFire();
@@ -38,12 +39,13 @@ int main() {
 	}
 
 	if (userNavy.IsLive())
-		std::cout <<"\n:-))) Ура! Победа!!! :-)))" << std::endl;
+		std::cout <<"\n:-))) РЈСЂР°! РџРѕР±РµРґР°!!! :-)))" << std::endl;
 	else {
-		std::cout << "\n:-((( Увы. Непрятель оказался сильнее." << std::endl;
-		std::cout << ":-((( Но ничего, в следующий раз мы ему покажем!!!" << std::endl;
+		std::cout << "\n:-((( РЈРІС‹. РќРµРїСЂСЏС‚РµР»СЊ РѕРєР°Р·Р°Р»СЃСЏ СЃРёР»СЊРЅРµРµ." << std::endl;
+		std::cout << ":-((( РќРѕ РЅРёС‡РµРіРѕ, РІ СЃР»РµРґСѓСЋС‰РёР№ СЂР°Р· РјС‹ РµРјСѓ РїРѕРєР°Р¶РµРј!!!" << std::endl;
 	}
 
 	std::cin.get();
+	system("pause");
 	return 0;
 }
