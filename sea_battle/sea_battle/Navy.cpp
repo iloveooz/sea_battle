@@ -129,18 +129,18 @@ void UserNavy::Allocation() {
 	vetoSet.clear();
 }
 
-void UserNavy::FillDeadZone(Rect r, Field & field) {
+void UserNavy::FillDeadZone(Rect r, Field& field) {
 	int i, j;
 	Rect sh = Shell(r);
 
 	for (i = sh.lt.row, j = sh.lt.col; j <= sh.rb.col; j++)
-		if (sh.lt.row > r.lt.row) field[i][j] = ' ';
+		if (sh.lt.row < r.lt.row) field[i][j] = ' ';
 
 	for (i = sh.rb.row, j = sh.lt.col; j <= sh.rb.col; j++)
 		if (sh.rb.row > r.rb.row) field[i][j] = ' ';
 
 	for (j = sh.lt.col, i = sh.lt.row; i <= sh.rb.row; i++)
-		if (sh.lt.col > r.lt.col) field[i][j] = ' ';
+		if (sh.lt.col < r.lt.col) field[i][j] = ' ';
 
 	for (j = sh.rb.col, i = sh.lt.row; i <= sh.rb.row; i++)
 		if (sh.rb.col > r.rb.col) field[i][j] = ' ';
