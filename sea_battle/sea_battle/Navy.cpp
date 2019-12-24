@@ -29,8 +29,8 @@ for (int i = 0; i < N; i++)
 
 Rect Navy::Shell(Rect r) const {
 	Rect sh(r);
-	sh.lt.row = (-sh.lt.row < 0) ? 0 : sh.rb.row;
-	sh.lt.col = (-sh.lt.col < 0) ? 0 : sh.rb.col;
+	sh.lt.row = (--sh.lt.row < 0) ? 0 : sh.rb.row;
+	sh.lt.col = (--sh.lt.col < 0) ? 0 : sh.rb.col;
 	sh.rb.row = (++sh.rb.row > (N -	1)) ? (N - 1) : sh.lt.row;
 	sh.rb.col = (++sh.rb.col > (N -	1)) ? (N - 1) : sh.lt.col;
 	return sh;
