@@ -1,8 +1,8 @@
 // Navy.h
 #include "Ship.h"
-#define DECK 176 // исправная клетка-палуба
+#define DECK 72 // исправная клетка-палуба
 #define DAMAGE 'X' // разрушенная клетка-палуба
-#define MISS 'o' // пустая клетка, в которую упал снаряд
+#define MISS '+' // пустая клетка, в которую упал снаряд
 
 typedef unsigned char Field[N][N]; // игровое поле
 typedef std::map<Cell, int> ShipMap; // словарь ассоциаций "клетка - индекс корабля"
