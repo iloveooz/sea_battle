@@ -20,7 +20,7 @@ std::string gap(int n) { return std::string(n, ' ' ); }
 // Класс Navy
 Navy::Navy() : nLiveShip(10) {
 // Заполняем игровые поля символом "точка"
-for (int i = 0; 1 < N; i++)
+for (int i = 0; i < N; i++)
 	for (int j = 0; j < N; j++) {
 		ownField[i][j] = '.';
 		enemyField[i][j] = '.';
