@@ -13,13 +13,13 @@ CurrentState Space::r_state = Miss;
 
 int Space::step = 1;
 
-// Функция gap(n) возвращает строку из n пробелов
+// Р¤СѓРЅРєС†РёСЏ gap(n) РІРѕР·РІСЂР°С‰Р°РµС‚ СЃС‚СЂРѕРєСѓ РёР· n РїСЂРѕР±РµР»РѕРІ
 std::string gap(int n) { return std::string(n, ' ' ); }
 
 
-// Класс Navy
+// РљР»Р°СЃСЃ Navy
 Navy::Navy() : nLiveShip(10) {
-// Заполняем игровые поля символом "точка"
+// Р—Р°РїРѕР»РЅСЏРµРј РёРіСЂРѕРІС‹Рµ РїРѕР»СЏ СЃРёРјРІРѕР»РѕРј "С‚РѕС‡РєР°"
 for (int i = 0; 1 < N; i++)
 	for (int j = 0; j < N; j++) {
 		ownField[i][j] = '.';
@@ -42,308 +42,282 @@ void Navy::AddToVetoSet(Rect r) {
 			vetoSet.insert(Cell(i, j));
 }
 
-void Navy::AllocSh1p(1nt 1ndSh1p. int nDeck. string name) {
-int 1. j;
-Cell It. rb;
-// Генерация случайно размещенной начальной клетки корабля
-// с учетом недопустимости "пересечения" нового корабля
-// с множеством клеток vetoSet
-whiled) {
-It.row = randO ^ (N + 1 - nDeck);
-It.col = rb.col = randO % N;
-rb.row = It.row + nDeck - 1;
-i f (IRectdt. rb).Intersect(vetoSet)) break;
-}
-// Сохраняем данные о новом корабле
-ship[indSh1p] = ShipCnDeck. name. Rectdt. rb));
-// Наносим новый корабль на игровое поле (символ DECK).
-// Добавляем соответствующие элементы в словарь ассоциаций
-for (i = It.row; 1 <= rb.row; i++)
-for (j = It.col; j <= rb.col; j++) {
-ownField[i][j] = DECK;
-shipMap[Cell(i.j)] = indShip;
+void Navy::AllocShip(int indShip, int nDeck, std::string name) {
+	int i, j;
+	Cell lt, rb;
+	// Р“РµРЅРµСЂР°С†РёСЏ СЃР»СѓС‡Р°Р№РЅРѕ СЂР°Р·РјРµС‰РµРЅРЅРѕР№ РЅР°С‡Р°Р»СЊРЅРѕР№ РєР»РµС‚РєРё РєРѕСЂР°Р±Р»СЏ
+	// СЃ СѓС‡РµС‚РѕРј РЅРµРґРѕРїСѓСЃС‚РёРјРѕСЃС‚Рё "РїРµСЂРµСЃРµС‡РµРЅРёСЏ" РЅРѕРІРѕРіРѕ РєРѕСЂР°Р±Р»СЏ
+	// СЃ РјРЅРѕР¶РµСЃС‚РІРѕРј РєР»РµС‚РѕРє vetoSet
+	while(1) {
+		lt.row = rand() % (N + 1 - nDeck);
+		lt.col = rb.col = rand() % N;
+		rb.row = lt.row + nDeck - 1;
+		if (!Rect(lt, rb).Intersect(vetoSet)) break;
+	}
+	// РЎРѕС…СЂР°РЅСЏРµРј РґР°РЅРЅС‹Рµ Рѕ РЅРѕРІРѕРј РєРѕСЂР°Р±Р»Рµ
+	ship[indShip] = Ship(nDeck, name, Rect(lt, rb));
+	// РќР°РЅРѕСЃРёРј РЅРѕРІС‹Р№ РєРѕСЂР°Р±Р»СЊ РЅР° РёРіСЂРѕРІРѕРµ РїРѕР»Рµ (СЃРёРјРІРѕР» DECK).
+	// Р”РѕР±Р°РІР»СЏРµРј СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ СЌР»РµРјРµРЅС‚С‹ РІ СЃР»РѕРІР°СЂСЊ Р°СЃСЃРѕС†РёР°С†РёР№
+	for (i = lt.row; i <= rb.row; i++)
+		for (j = lt.col; j <= rb.col; j++) {
+			ownField[i][j] = DECK;
+			shipMap[Cell(i, j)] = indShip;
+	}
+
+	// Р”РѕР±Р°РІР»СЏРµРј РІ РјРЅРѕР¶РµСЃС‚РІРѕ vetoSet РєР»РµС‚РєРё РЅРѕРІРѕРіРѕ РєРѕСЂР°Р±Р»СЏ РІРјРµСЃС‚Рµ СЃ РїРѕРіСЂР°РЅРёС‡РЅС‹РјРё РєР»РµС‚РєР°РјРё
+	AddToVetoSet(Shell(Rect(lt, rb)));
 }
 
-// Добавляем в множество vetoSet клетки нового корабля
-// вместе с пограничными клетками
-AddToVetoSet(Shell (Rectdt. rb)));
-void Navy::$how() const {
-char rowNameClO] = {'A'. 'B'. 'C. 'D'. 'E'. 'F'. '6*. 'H'. T . 'J']
+void Navy::Show() const {
+	char rowName[10] = { 'A', 'B', 'C', 'D', 'E', 'F', '6', 'H', 'I', 'J' };
 	std::string colName("l 2 3 4 5 6 7 8 9 10");
-int i. j;
-std::cout << " \n";
-std::cout << gap(3) << "Мой флот" << gap(18) << "Флот неприятеля" << std::endl;
-std::cout << gap(3) << colName << gap(6) << colName << std::endl;
-for (i = 0 ; i < N; i++) {
-// Own
-std::string line = gapd) + rowName[i];
-for (j = 0; j < N; j++)
-line += gapd) + (char)ownField[i][j];
-// Enemy
-line += gap(5) + rowName[i];
-for (j = 0; j < N; j++)
+	int i, j;
+	std::cout << "---------------------\n";
 
-Ипе += gap(l) + (char)eneniyF1eld[i][j];
-std::cout << line << std::endl;
-std::cout << std::endl:
-std::cout << "====
+	std::cout << gap(3) << "РњРѕР№ С„Р»РѕС‚" << gap(18) << "Р¤Р»РѕС‚ РЅРµРїСЂРёСЏС‚РµР»СЏ" << std::endl;
+	std::cout << gap(3) << colName << gap(6) << colName << std::endl;
+
+	for (i = 0; i < N; i++) {
+		// Own
+		std::string line = gap(1) + rowName[i];
+		for (j = 0; j < N; j++)
+			line += gap(1) + (char)ownField[i][j];
+		// Enemy
+		line += gap(5) + rowName[i];
+		for (j = 0; j < N; j++)
+			line += gap(1) + (char)enemyField[i][j];
+		std::cout << line << std::endl;
+		std::cout << std::endl;
+	}
+	std::cout << "=====================\n";
+	std::cout << step << ". " << "РњРѕР№ РІС‹СЃС‚СЂРµР»:  ";
+	step++;
 }
-=\n":
-std::cout << step << ". " << "Мой выстрел:
-step++;
-1nt Navy:: Get Into {
-1nt value:
-while (true) {
-cin >> value:
-if ('\n' == cin.peek()) { cin.getO: break: }
-else {
-std::cout << "Повторите ввод колонки (ожидается целое число):" << endl:
-cin.clearO:
-while (Cin.getO != ' \ n ' ) {}:
-return value:
-///////////////////////////////////////////////////////////
-// Класс UserNavy
+
+int Navy::GetInt() {
+	int value;
+	while (true) {
+		std::cin >> value;
+		if ('\n' == std::cin.peek()) {
+			std::cin.get(); 
+			break;
+		}
+		else {
+			std::cout << "РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ РєРѕР»РѕРЅРєРё (РѕР¶РёРґР°РµС‚СЃСЏ С†РµР»РѕРµ С‡РёСЃР»Рѕ):" << std::endl;
+			std::cin.clear();
+			while (std::cin.get() != '\n') {};
+		}
+	}
+	return value;
+}
+
+// РљР»Р°СЃСЃ UserNavy
 void UserNavy::Allocation() {
-srand((unsigned)time(NULL)):
-AllocShip(0. 4. "Авианосец 'Варяг'"):
-AllocShipd, 3. "Линкор 'Муромец'")
-AllocShip(2, 3. "Линкор 'Никитич'")
-AllocShip(3. 2. "Крейсер 'Чудный'")
-AllocShip(4, 2, "Крейсер 'Добрый'")
-AllocSh1p(5, 2. "Крейсер 'Справедливый'"):
-AllocShip(6. 1. "Миноносец 'Храбрый'"):
-AllocSh1p(7, 1. "Миноносец 'Ушлый'"):
-AllocShip(8. 1. "Миноносец 'Проворный'"):
-AllocShip(9, 1. "Миноносец 'Смелый" ):
-vetoSet.clearO:
-void UserNavy::FillDeadZone(Rect
-int
-Reel
-for
-for
-for
-i.
-: si
-(i
-if
-(1
-if
-(J
-J:
-1 = Shell(r):
-= sh.lt.row.
-(sh.lt.row <
-= sh.rb.row.
-(sh.rb.row >
-= sh.lt.col.
-j
-r
-j
-r
-i
-= sh.lt
-It.row)
-= sh.lt
-rb.row)
-= sh.lt
-^ Fields fie
-col: j
-field[-
-col: j
-field[-
-row: i
-<= sh
-][j] -
-<= sh
-][j] =
-<= sh
-Id) {
-rb.col:
-= '
-rb
-= '
-rb
-' .
-col:
-'.
-row:
-J-^+)
-j++)
-i++)
-i f (sh.lt.col < r . I t . c o l ) f i e l d [ i ] [ j]
-
-for (j = sh.rb.col. 1 = sh.lt.row: 1 <= sh.rb.row; 1++)
-1f (sh.rb.col > r.rb.col) f1eld[1][j] = ' ';
-void UserNavy::F1reOff() {
-string capltaljetter = "ABCDEFGHIJ";
-string small_letter = "abcdefghlj";
-unsigned char rowName; // обозначение ряда (A. В. ... . J)
-Int colName; // обозначение колонки (1. 2 10)
-Int row; // индекс ряда (О, 1 9)
-1nt col: // индекс колонки (0. 1 9)
-bool success = false;
-while (!success) {
-	std::cin >> rowName;
-row = cap1tal__letter.f1nd(rowName):
-If (-1 == row) row = small_letter.f1nd(rowName);
-If (-1 == row) { std::cout << "Ошибка. Повторите ввод.\п"; continue;
-col Name = Getlnt();
-col = col Name - 1;
-If ((col < 0) li (col > 9)) {
-std::cout << "Ошибка. Повторите ввод.Хп"; continue;
-}
-success = true;
-}
-u_f1re = Cell(row. col);
-}
-void UserNavy:;ResultAnalys() {
-// r_state - сообщение робота о результате выстрела
-// пользователя по клетке u_f1re
-sw1tch(r_state) {
-case Miss;
-enemyF1eld[u_f1re.row][u_f1re.col] = MISS;
-break;
-case Damage:
-enemyF1eld[u_f1re.row][u_f1re.col] = DAMAGE;
-crushSet.1nsert(u_f1re);
-break;
-cdse Kill:
-enemyF1eld[u_f1re.row][u_f1re.col] = DAMAGE;
-crushSet.1nsert(u_f1 re);
-Rect k i l l;
-k i l l . I t = ^crushSet.begln();
-k l l l . r b = ^(-crushSet.end());
-// Заполняем "обрамление" пробелами
-F1llDeadZone(k1ll. enemyFleld);
-crushSet.clear();
+	srand((unsigned)time(NULL));
+	AllocShip(0, 4, "РђРІРёР°РЅРѕСЃРµС† 'Р’Р°СЂСЏРі'");
+	AllocShip(1, 3, "Р›РёРЅРєРѕСЂ 'РњСѓСЂРѕРјРµС†'");
+	AllocShip(2, 3, "Р›РёРЅРєРѕСЂ 'РќРёРєРёС‚РёС‡'");
+	AllocShip(3, 2, "РљСЂРµР№СЃРµСЂ 'Р§СѓРґРЅС‹Р№'");
+	AllocShip(4, 2, "РљСЂРµР№СЃРµСЂ 'Р”РѕР±СЂС‹Р№'");
+	AllocShip(5, 2, "РљСЂРµР№СЃРµСЂ 'РЎРїСЂР°РІРµРґР»РёРІС‹Р№'");
+	AllocShip(6, 1, "РњРёРЅРѕРЅРѕСЃРµС† 'РҐСЂР°Р±СЂС‹Р№'");
+	AllocShip(7, 1, "РњРёРЅРѕРЅРѕСЃРµС† 'РЈС€Р»С‹Р№'");
+	AllocShip(8, 1, "РњРёРЅРѕРЅРѕСЃРµС† 'РџСЂРѕРІРѕСЂРЅС‹Р№'");
+	AllocShip(9, 1, "РњРёРЅРѕРЅРѕСЃРµС† 'РЎРјРµР»С‹Р№'");
+	vetoSet.clear();
 }
 
-void UserNavy::GetF1re() {
-/ / выстрел робота - по клетке r_f1re
-string capUalJetter = "ABCDEFGHIJ":
-char rowName = cap1tal_letter[r_f1re.row];
-1nt col Name = r_f1re.col + 1;
-std::cout << 'ЛпВыстрел неприятеля: " << rowName << colName << endl;
-i f (DECK == ownF1eld[r_f1re.row][r_fire.col]) {
-std::cout << "'^^^ Есть попадание! ^*^";
-ownField[r_f1re.row][r_f1re.col] = DAMAGE;
-u_state = Damage:
-// индекс корабля, занимающего клетку r_f1re
-int ind = sh1pMap[r_f1re]:
-sh1p[1nd].nL1veDeck-:
-i f (!sh1p[1nd].nL1veDeck) {
-u_state = K i l l:
-std::cout << gap(6) << "0 ужас! Погиб " << ship[ind].name <<
-nLiveShip-:
-Rect k i l l = shipCind].place:
-FillDeadZone(kill. ownField):
-else {
-u_state = Miss;
-std::cout << "**^ Мимо! ***":
-ownField[r 1
+void UserNavy::FillDeadZone(Rect r, Field & field) {
+	int i, j;
+	Rect sh = Shell(r);
+
+	for (i = sh.lt.row, j = sh.lt.col; j <= sh.rb.col; j++)
+		if (sh.lt.row > r.lt.row) field[i][j] = ' ';
+
+	for (i = sh.rb.row, j = sh.lt.col; j <= sh.rb.col; j++)
+		if (sh.rb.row > r.rb.row) field[i][j] = ' ';
+
+	for (j = sh.lt.col, i = sh.lt.row; i <= sh.rb.row; i++)
+		if (sh.lt.col > r.lt.col) field[i][j] = ' ';
+
+	for (j = sh.rb.col, i = sh.lt.row; i <= sh.rb.row; i++)
+		if (sh.rb.col > r.rb.col) field[i][j] = ' ';
 }
-std::cout << endl:
-nre.row][r_fire.col] = MISS:
-1
-///////////////////////////////////////////////////////////
-// Класс RobotNavy
+
+void UserNavy::FireOff() {
+	std::string capital_letter = "ABCDEFGHIJ";
+	std::string small_letter = "abcdefghij";
+
+	unsigned char rowName; // РѕР±РѕР·РЅР°С‡РµРЅРёРµ СЂСЏРґР° (A, Р’, ... , J)
+	int colName; // РѕР±РѕР·РЅР°С‡РµРЅРёРµ РєРѕР»РѕРЅРєРё (1, 2, ..., 10)
+	int row; // РёРЅРґРµРєСЃ СЂСЏРґР° (Рћ, 1, ..., 9)
+	int col; // РёРЅРґРµРєСЃ РєРѕР»РѕРЅРєРё (0, 1, ..., 9)
+
+	bool success = false;
+	while (!success) {
+		std::cin >> rowName;
+		row = capital_letter.find(rowName);
+
+		if (-1 == row) 
+			row = small_letter.find(rowName);
+		
+		if (-1 == row) { 
+			std::cout << "РћС€РёР±РєР°. РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ.\n"; 
+			continue;
+		}
+		colName = GetInt();
+		col = colName - 1;
+		if ((col < 0) || (col > 9)) {
+			std::cout << "РћС€РёР±РєР°. РџРѕРІС‚РѕСЂРёС‚Рµ РІРІРѕРґ.\n"; 
+			continue;
+		}
+		success = true;
+	}
+	u_fire = Cell(row, col);
+}
+
+void UserNavy::ResultAnalyse() {
+	// r_state - СЃРѕРѕР±С‰РµРЅРёРµ СЂРѕР±РѕС‚Р° Рѕ СЂРµР·СѓР»СЊС‚Р°С‚Рµ РІС‹СЃС‚СЂРµР»Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕ РєР»РµС‚РєРµ u_fire
+	switch(r_state) {
+	case Miss:
+		enemyField[u_fire.row][u_fire.col] = MISS;
+		break;
+	case Damage:
+		enemyField[u_fire.row][u_fire.col] = DAMAGE;
+		crushSet.insert(u_fire);
+		break;
+	case Kill:
+		enemyField[u_fire.row][u_fire.col] = DAMAGE;
+		crushSet.insert(u_fire);
+		Rect kill;
+		kill.lt = *crushSet.begin();
+		kill.rb = *(--crushSet.end());
+		// Р—Р°РїРѕР»РЅСЏРµРј "РѕР±СЂР°РјР»РµРЅРёРµ" РїСЂРѕР±РµР»Р°РјРё
+		FillDeadZone(kill, enemyField);
+		crushSet.clear();
+	}
+}
+
+void UserNavy::GetFire() {
+	// РІС‹СЃС‚СЂРµР» СЂРѕР±РѕС‚Р° - РїРѕ РєР»РµС‚РєРµ r_fire
+	std::string capital_letter = "ABCDEFGHIJ";
+	
+	char rowName = capital_letter[r_fire.row];
+	int colName = r_fire.col + 1;
+
+	std::cout << "\nР’С‹СЃС‚СЂРµР» РЅРµРїСЂРёСЏС‚РµР»СЏ: " << rowName << colName << std::endl;
+
+	if (DECK == ownField[r_fire.row][r_fire.col]) {
+		std::cout << "*** Р•СЃС‚СЊ РїРѕРїР°РґР°РЅРёРµ! ***";
+		ownField[r_fire.row][r_fire.col] = DAMAGE;
+		u_state = Damage;
+		// РёРЅРґРµРєСЃ РєРѕСЂР°Р±Р»СЏ, Р·Р°РЅРёРјР°СЋС‰РµРіРѕ РєР»РµС‚РєСѓ r_fire
+		int ind = shipMap[r_fire];
+		ship[ind].nLiveDeck--;
+		if (!ship[ind].nLiveDeck) {
+			u_state = Kill;
+			std::cout << gap(6) << "Рћ СѓР¶Р°СЃ! РџРѕРіРёР± " << ship[ind].name << " !!!";
+			nLiveShip--;
+			Rect kill = ship[ind].place;
+			FillDeadZone(kill, ownField);
+		}
+	}
+	else {
+		u_state = Miss;
+		std::cout << "*** РњРёРјРѕ! ***";
+		ownField[r_fire.row][r_fire.col] = MISS;
+	}
+	std::cout << std::endl;
+}
+
+// РљР»Р°СЃСЃ RobotNavy
 RobotNavy::RobotNavy() {
-AllocationO:
-isCrushContinue
-upEmpty = false
-}
-= false;
-void RobotNavy::Allocation0 {
-AllocSh^
-AllocSh"
-AllocSh^
-AllocShi
-AllocShi
-AllocSh!
-AllocShi
-AllocShi
-AllocShi
-p(0. 4.
-p(l. 3.
-p(2. 3.
-p(3. 2.
-p(4. 2.
-p(5. 2.
-p(6. 1.
-p(7. 1.
-p(8. 1.
-AllocShip(9. 1.
-vetoSet. clearO:
-"Авианосец 'Алькаида'"):
-"Линкор 'БенЛаден'"):
-"Линкор 'Хусейн*");
-"Крейсер 'Подлый•");
-"Крейсер 'Коварный'");
-"Крейсер 'Злой'");
-"Миноносец 'Гадкий'");
-"Миноносец 'Мерзкий'");
-"Миноносец 'Пакостный'");
-"Миноносец 'Душный'");
-
-void RobotNavy::F1reOff() {
-Cell с. cUp;
-1f (!1sCrushCont1nue) {
-// случайный выбор координат выстрела
-wh1le(l) {
-crow = randO % N;
-с.col = randO % N:
-1f (!c.InSet(vetoSet)) break;
-}
-}
-else {
-/ / "пляшем" от предыдущего попадания
-с = clip = r_f1re:
-clip, row-;
-i f (dupEmpty) && crow && (!cUp. InSet(vetoSet)))
-с.row-;
-else {
-с = ^(-crushSet.end());
-с.row++;
-r_f1re = c;
-vetoSet.insert(r fire);
-void RobotNavy:;ResultAnalys() {
-// u_state - сообщение пользователя о результате
-// выстрела робота по клетке r_fire
-switch(u__state) {
-case Miss:
-if (isCrushContinue) upEmpty = true;
-break;
-case Damage:
-isCrushContinue = true;
-crushSet.insert(r_fire);
-break;
-case Kill:
-isCrushContinue = false;
-upEmpty = false;
-crushSet.i nsert(r_fi re);
-Rect kill;
-k i l l . I t = ^crushSet.begin();
-k i l l . r b = ^(-crushSet.end());
-AddToVetoSet(Shell(kill));
-crushSet.clear();
-}
+	Allocation();
+	isCrushContinue = false;
+	upEmpty = false;
 }
 
-void RobotNavy::GetF1re() {
-/ / выстрел пользователя - по клетке u_f1re
-1f (DECK == ownF1eld[u_f1re.row][u_f1re.col]) {
-std::cout << "*** Есть попадание! '^^^";
-r_state = Damage;
-// индекс корабля, занимающего клетку u_f1re
-1nt 1nd = sh1pMap[u_f1re];
-sh1p[1nd].nL1veDecl<-;
-if (!sh1p[1nd].nL1veDeck) {
-r_state = Kill;
-std::cout << gap(6) << "Уничтожен " << sh1p[1nd].name << " !!!'
-nLiveShIp-:
-else {
-r_state = Miss:
-std::cout << "*^^ Мимо! ***";
+void RobotNavy::Allocation() {
+	AllocShip(0, 4,	"РђРІРёР°РЅРѕСЃРµС† 'РђР»СЊРєР°РёРґР°'");
+	AllocShip(1, 3,	"Р›РёРЅРєРѕСЂ 'Р‘РµРЅР›Р°РґРµРЅ'");
+	AllocShip(2, 3,	"Р›РёРЅРєРѕСЂ 'РҐСѓСЃРµР№РЅ'");
+	AllocShip(3, 2,	"РљСЂРµР№СЃРµСЂ 'РџРѕРґР»С‹Р№'");
+	AllocShip(4, 2,	"РљСЂРµР№СЃРµСЂ 'РљРѕРІР°СЂРЅС‹Р№'");
+	AllocShip(5, 2,	"РљСЂРµР№СЃРµСЂ 'Р—Р»РѕР№'");
+	AllocShip(6, 1,	"РњРёРЅРѕРЅРѕСЃРµС† 'Р“Р°РґРєРёР№'");
+	AllocShip(7, 1,	"РњРёРЅРѕРЅРѕСЃРµС† 'РњРµСЂР·РєРёР№'");
+	AllocShip(8, 1,	"РњРёРЅРѕРЅРѕСЃРµС† 'РџР°РєРѕСЃС‚РЅС‹Р№'");
+	AllocShip(9, 1,	"РњРёРЅРѕРЅРѕСЃРµС† 'Р”СѓС€РЅС‹Р№'");
+	vetoSet.clear();
 }
-std::cout << std::endl:
+
+void RobotNavy::FireOff() {
+	Cell c, cUp;
+	if (!isCrushContinue) {
+		// СЃР»СѓС‡Р°Р№РЅС‹Р№ РІС‹Р±РѕСЂ РєРѕРѕСЂРґРёРЅР°С‚ РІС‹СЃС‚СЂРµР»Р°
+		while(1) {
+			c.row = rand() % N;
+			c.col = rand() % N;
+			if (!c.InSet(vetoSet)) 
+				break;
+		}
+	}
+	else {
+		// "РїР»СЏС€РµРј" РѕС‚ РїСЂРµРґС‹РґСѓС‰РµРіРѕ РїРѕРїР°РґР°РЅРёСЏ
+		c = cUp = r_fire;
+		cUp.row--;
+		if ((!upEmpty) && c.row && (!cUp.InSet(vetoSet)))
+			c.row--;
+		else {
+			c = *(--crushSet.end());
+			c.row++;
+		}
+	}
+	r_fire = c;
+	vetoSet.insert(r_fire);
+}
+
+void RobotNavy::ResultAnalyse() {
+	// u_state - СЃРѕРѕР±С‰РµРЅРёРµ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ Рѕ СЂРµР·СѓР»СЊС‚Р°С‚Рµ РІС‹СЃС‚СЂРµР»Р° СЂРѕР±РѕС‚Р° РїРѕ РєР»РµС‚РєРµ r_fire
+	switch(u_state) {
+	case Miss:
+		if (isCrushContinue) 
+			upEmpty = true;
+		break;
+	case Damage:
+		isCrushContinue = true;
+		crushSet.insert(r_fire);
+		break;
+	case Kill:
+		isCrushContinue = false;
+		upEmpty = false;
+		crushSet.insert(r_fire);
+		Rect kill;
+		kill.lt = *crushSet.begin();
+		kill.rb = *(--crushSet.end());
+
+		AddToVetoSet(Shell(kill));
+		crushSet.clear();
+	}
+}
+
+void RobotNavy::GetFire() {
+	// РІС‹СЃС‚СЂРµР» РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ - РїРѕ РєР»РµС‚РєРµ u_fire
+	if (DECK == ownField[u_fire.row][u_fire.col]) {
+		std::cout << "*** Р•СЃС‚СЊ РїРѕРїР°РґР°РЅРёРµ! ***";
+		r_state = Damage;
+		// РёРЅРґРµРєСЃ РєРѕСЂР°Р±Р»СЏ, Р·Р°РЅРёРјР°СЋС‰РµРіРѕ РєР»РµС‚РєСѓ u_f1re
+		int ind = shipMap[u_fire];
+		ship[ind].nLiveDeck--;
+		if (!ship[ind].nLiveDeck) {
+			r_state = Kill;
+			std::cout << gap(6) << "РЈРЅРёС‡С‚РѕР¶РµРЅ " << ship[ind].name << " !!!";
+			nLiveShip--;
+		}
+	}
+	else {
+		r_state = Miss;
+		std::cout << "*** РњРёРјРѕ! ***";
+	}
+	std::cout << std::endl;
 }
