@@ -4,7 +4,6 @@
 #include "Ship.h"
 #include <iterator>
 
-
 bool Cell::InSet(const CellSet& cs) const {
 	return (cs.count(Cell(row, col)) > 0);
 }
@@ -24,6 +23,5 @@ bool Rect::Intersect(const CellSet& cs) const {
 	set_intersection(cset.begin(), cset.end(), cs.begin(), cs.end(), inserter(common_cell, common_cell.begin()));
 	return (common_cell.size() > 0);
 }
-
 
 Ship::Ship(int _nDeck, std::string _name, Rect _place) : place(_place), name(_name), nDeck(_nDeck), nLiveDeck(_nDeck) {}
